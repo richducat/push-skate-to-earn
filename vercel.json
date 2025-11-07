@@ -1,4 +1,4 @@
 {
-  "buildCommand": "bash -c \"unzip -o push-skate-to-earn-pro.zip && cd push-skate-to-earn-pro && sed -i 's/const metersToKm/var metersToKm/' src/App.jsx && npm install && npm run build && cp -r dist ../dist\"",
+  "buildCommand": "bash -c \"unzip -o push-skate-to-earn-pro.zip && cd push-skate-to-earn-pro && sed -i '/function metersToKm/d' src/App.jsx && npm install && npm run build && cp -r dist ../dist\"",
   "outputDirectory": "dist"
 }
