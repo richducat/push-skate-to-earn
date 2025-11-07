@@ -1,0 +1,16 @@
+[
+  {
+    "id": "skate01",
+    "name": "Classic Kickflip",
+    "image": "/images/skate01.png",
+    "description": "A balanced board for everyday rides.",
+    "priceSol": 0.50
+  },
+  {
+    "id": "skate02",
+    "name": "Speed Demon",
+    "image": "/images/skate02.png",
+    "description": "Designed for speed with a reinforced deck.",
+    "priceSol": 1.00
+  }
+]
