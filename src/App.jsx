@@ -1,5 +1,5 @@
-// ...
-import Marketplace from './pages/Marketplace.jsx';
+// Before
+<Link to="/boards">Boards</Link>
 
-// inside your router definition:
-<Route path="/marketplace" element={<Marketplace />} />
+// After
+<Link to="/marketplace">Boards</Link>
