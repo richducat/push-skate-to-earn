@@ -1,4 +1,3 @@
-// src/pages/Marketplace.jsx
 import { useEffect, useState } from 'react';
 import { PublicKey } from '@solana/web3.js';
 import { encodeURL, createQR } from '@solana/pay';
@@ -7,7 +6,9 @@ export default function Marketplace() {
   const [boards, setBoards] = useState([]);
 
   useEffect(() => {
-    fetch('/api/boards').then(res => res.json()).then(setBoards);
+    fetch('/api/boards')
+      .then((res) => res.json())
+      .then(setBoards);
   }, []);
 
   const merchant = import.meta.env.VITE_MERCHANT_WALLET || 'wallett.sol';
@@ -34,13 +35,32 @@ export default function Marketplace() {
     qrContainer.innerHTML = '';
     const qr = createQR(url, 256, 'white');
     qr.append(qrContainer);
+
+    // Mint the NFT after payment (replace buyer address as needed)
+    fetch('/api/mint-board', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        boardId: board.id,
+        buyer: merchant, // using merchant as placeholder for buyer address
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.mintAddress) {
+          alert(`NFT minted! Mint address: ${data.mintAddress}`);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   return (
     <div className="p-4">
       <h1 className="text-3xl font-bold mb-4">Marketplace</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {boards.map(board => (
+        {boards.map((board) => (
           <div key={board.id} className="border rounded p-4 shadow">
             <h2 className="text-xl font-semibold mb-2">{board.name}</h2>
             <p className="mb-2">{board.description}</p>
