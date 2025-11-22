@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "@solana/wallet-adapter-react-ui/styles.css";
+
+:root {
+  color-scheme: dark;
+  font-family: 'Space Grotesk', 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  @apply text-slate-50 min-h-screen;
+  background: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.15), transparent 35%),
+              radial-gradient(circle at 80% 10%, rgba(14, 165, 233, 0.15), transparent 30%),
+              radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.12), transparent 35%),
+              #020617;
+}
+
+a {
+  color: inherit;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(94, 234, 212, 0.5) rgba(255, 255, 255, 0.08);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(52, 211, 153, 0.7), rgba(59, 130, 246, 0.5));
+  border-radius: 9999px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
