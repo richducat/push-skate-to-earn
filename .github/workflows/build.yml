@@ -13,7 +13,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      # Use npm install because the repo intentionally omits a lockfile; Vercel also
-      # installs this way before running the production build.
-      - run: npm install
+      - run: npm ci
       - run: npm run build

@@ -251,8 +251,6 @@ export default function App() {
   }
 
   const [lb, setLb] = useState([]);
-  const [catalog, setCatalog] = useState([]);
-  const [catalogLoading, setCatalogLoading] = useState(false);
   async function loadLeaderboard() {
     const r = isPreview()
       ? { ok: true, json: async () => ({ items: [] }) }
@@ -262,28 +260,6 @@ export default function App() {
     setLb(data.items || []);
   }
   useEffect(() => { if (tab === "leaderboard") loadLeaderboard(); }, [tab]);
-
-  async function loadCatalog() {
-    if (catalogLoading || catalog.length) return;
-    setCatalogLoading(true);
-    try {
-      const r = isPreview()
-        ? { ok: true, json: async () => ([
-            { id: "demo-1", name: "Yield Cruiser", description: "Balanced control for everyday commutes.", priceSol: 0.48, image: "https://images.unsplash.com/photo-1465844986428-c22dc1cf0f1b?auto=format&fit=crop&w=500&q=80" },
-            { id: "demo-2", name: "Velocity Pro", description: "Race-tuned deck with reinforced trucks.", priceSol: 1.12, image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=500&q=80" },
-            { id: "demo-3", name: "Nightfall LTD", description: "Limited drop with StepN-style neon underglow.", priceSol: 2.4, image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=500&q=80" },
-          ]) }
-        : await fetch(API("/api/boards"));
-      if (!r.ok) throw new Error("catalog");
-      const data = await r.json();
-      setCatalog(Array.isArray(data) ? data : []);
-    } catch (_) {
-      setCatalog([]);
-    } finally {
-      setCatalogLoading(false);
-    }
-  }
-  useEffect(() => { if (tab === "market") loadCatalog(); }, [tab]);
 
   const tickerFeed = [
     { symbol: "SOL", name: "Solana", price: "$148.22", change: +2.4 },
@@ -567,34 +543,19 @@ export default function App() {
               )}
 
               {tab === "market" && (
-                <section className="space-y-4">
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-slate-900 to-slate-950 p-5">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                      <div>
-                        <h3 className="text-lg font-semibold">Marketplace</h3>
-                        <div className="text-sm text-slate-300">Curated boards with finance.yahoo-com style price blocks & StepN-inspired rarity glow.</div>
-                      </div>
-                      <div className="flex gap-2 text-xs flex-wrap">
-                        <Chip>Royalties</Chip><Chip>Anti‑cheat</Chip><Chip>Geo‑events</Chip>
-                        <Chip>Crews</Chip><Chip>Streaks</Chip><Chip>Leaderboards</Chip>
-                      </div>
-                    </div>
-                    <div className="mt-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                      {catalog.map((item) => (
-                        <MarketCard key={item.id} item={item} onEquip={() => setBoards([createDemoBoard("Uncommon"), ...boards])} />
-                      ))}
-                      {catalogLoading && <div className="text-sm text-slate-400">Loading catalog…</div>}
-                      {!catalogLoading && catalog.length === 0 && (
-                        <div className="text-sm text-slate-400">No drops yet—check back after the next snapshot.</div>
-                      )}
+                    <h3 className="text-lg font-semibold">Marketplace (Soon)</h3>
+                    <div className="text-sm text-slate-300">List/buy/sell Boards with royalties; devnet first. Anti-cheat, Geo events, Streaks, Crews.</div>
+                    <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
+                      <Chip>Royalties</Chip><Chip>Anti‑cheat</Chip><Chip>Geo‑events</Chip>
+                      <Chip>Crews</Chip><Chip>Streaks</Chip><Chip>Leaderboards</Chip>
                     </div>
                   </div>
-                  <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                    <div>
-                      <h3 className="font-semibold">Faucet</h3>
-                      <p className="text-sm text-slate-200">Prime your wallet with SOL before minting. Devnet faucet recommended for testing the new marketplace rails.</p>
-                    </div>
-                    <a className="inline-flex text-sm underline text-emerald-50 hover:text-emerald-200" href="https://faucet.solana.com/" target="_blank" rel="noreferrer">Get devnet SOL →</a>
+                  <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-5">
+                    <h3 className="font-semibold">Faucet</h3>
+                    <p className="text-sm text-slate-200">Prime your wallet with SOL before minting. Devnet faucet recommended for testing the new marketplace rails.</p>
+                    <a className="mt-3 inline-flex text-sm underline text-emerald-200 hover:text-emerald-100" href="https://faucet.solana.com/" target="_blank" rel="noreferrer">Get devnet SOL →</a>
                   </div>
                 </section>
               )}
@@ -739,28 +700,6 @@ function NewsCard({ title, tag, time }) {
         <span>{time}</span>
       </div>
       <div className="mt-2 text-sm font-semibold text-white">{title}</div>
-    </div>
-  );
-}
-
-function MarketCard({ item, onEquip }) {
-  return (
-    <div className="rounded-xl border border-white/10 bg-white/5 overflow-hidden flex flex-col">
-      {item.image && <div className="h-36 w-full bg-cover bg-center" style={{ backgroundImage: `url(${item.image})` }} />}
-      <div className="p-3 flex-1 flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="text-sm font-semibold text-white">{item.name}</div>
-            <div className="text-[11px] text-emerald-200">Curated board</div>
-          </div>
-          <span className="text-xs rounded-full px-2 py-1 bg-emerald-500/10 border border-emerald-400/30 text-emerald-100">{item.priceSol} ◎</span>
-        </div>
-        <p className="text-xs text-slate-300 min-h-[2.5rem]">{item.description}</p>
-        <div className="text-[11px] text-slate-400 flex items-center gap-2 mt-auto">
-          <span className="h-2 w-2 rounded-full bg-emerald-400" /> Limited drop
-        </div>
-        <button onClick={onEquip} className="mt-1 rounded-lg px-3 py-2 bg-white/10 hover:bg-white/20 border border-white/10 text-sm">Simulate Equip</button>
-      </div>
     </div>
   );
 }
