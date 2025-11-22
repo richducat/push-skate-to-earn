@@ -17,12 +17,12 @@ npm run dev
 
 ## Deploy (Vercel)
 1) Push this repo to your GitHub.
-2) Import into Vercel → Framework: **Vite**. Point the production domain to **https://push-skate-to-earn.vercel.app/**.
+2) Import into Vercel → Framework: **Vite**.  
 3) **Add Environment Variables** (Project → Settings → Environment Variables):
    - `JWT_SECRET` = a long random string
    - `BLOB_READ_WRITE_TOKEN` = token from https://vercel.com/docs/storage/vercel-blob
    - `BLOB_BUCKET` = `push-data` (or your custom folder)
-4) Deploy. The serverless API lives under `/api/*`. A SPA rewrite is already defined in `vercel.json` so any non-API path renders `index.html` (deep links work on production without manual rewrites).
+4) Deploy. The serverless API lives under `/api/*`.
 
 ## Endpoints
 - `GET /api/siws-challenge?address=...` → message to sign
