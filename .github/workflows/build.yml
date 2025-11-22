@@ -1,0 +1,19 @@
+name: Build (Vite)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      # Use npm install because the repo intentionally omits a lockfile; Vercel also
+      # installs this way before running the production build.
+      - run: npm install
+      - run: npm run build
